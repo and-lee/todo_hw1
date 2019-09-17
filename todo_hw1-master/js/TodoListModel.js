@@ -98,7 +98,11 @@ class TodoListModel {
      * else false.
      */
     isEditingItem() {
-        return this.editItem != null;
+        return this.editItem;// != null;
+    }
+
+    setIsEditingItem(bool) {
+        this.editItem = bool;
     }
 
     /**
@@ -123,7 +127,11 @@ class TodoListModel {
         this.view.showElementWithId(TodoGUIId.TODO_ITEM, false); //*********** */
 
         // AND GO HOME
-        this.view.showElementWithId(TodoGUIId.TODO_HOME, true);        
+        this.view.showElementWithId(TodoGUIId.TODO_HOME, true);
+
+        document.getElementById(TodoGUIId.TODO_HOME).style.visibility = "visible";
+        
+        window.todo.view.showElementWithId(TodoGUIId.MODAL_YES_NO_DIALOG, false);
     }
 
     /**
@@ -138,6 +146,8 @@ class TodoListModel {
 
         // SHOW THE TOOLBAR AND LIST EDIT
         this.view.showElementWithId(TodoGUIId.TODO_LIST, true);
+
+        document.getElementById(TodoGUIId.TODO_HOME).style.visibility = "visible";
     }
 
     /**
@@ -147,6 +157,8 @@ class TodoListModel {
         // THIS MIGHT HAVE OCCURED FROM LIST SO HIDE LIST
         this.view.showElementWithId(TodoGUIId.TODO_LIST, false);
         this.view.showElementWithId(TodoGUIId.TODO_HOME, false); //*********** */
+
+        document.getElementById(TodoGUIId.TODO_HOME).style.visibility = "hidden";
 
         // SHOW EDIT ITEM SCREEN
         this.view.showElementWithId(TodoGUIId.TODO_ITEM, true);
@@ -248,7 +260,6 @@ class TodoListModel {
             item1 = item2;
             item2 = temp;
         }
-        // SORT BY ITEM DESCRIPTION
         if (thisModel.isCurrentItemSortCriteria(ItemSortCriteria.SORT_BY_TASK_INCREASING)
             || thisModel.isCurrentItemSortCriteria(ItemSortCriteria.SORT_BY_TASK_DECREASING)) {
             if (item1.getDescription() < item2.getDescription())

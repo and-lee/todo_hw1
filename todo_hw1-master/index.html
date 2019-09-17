@@ -50,19 +50,6 @@
         <div id="list_heading">@todo</div> 
         
         <div id="list_trash">&#128465</div>
-        <div id="modal_yes_no_dialog" class="modal_yes_no_dialog">
-            <div class="modal_yes_no_dialog-content">
-                <header>Delete list?</header>
-                <p><strong>Are you sure you want to delete this list?</strong></p>
-                <p>
-                    <button id="modal_yes_button" class="modal_yes_button">Yes</button>
-                    <button id="modal_no_button" class="modal_no_button">No</button>
-                </p>
-                <footer>The list will not be retreivable.</footer>
-            </div>
-        </div>
-
-
         <div id="list_details_container"> <!--GRID-->
             <div id="list_details_name_container" class="text_toolbar">
                 <span id="list_name_prompt">Name:</span>
@@ -104,6 +91,19 @@
             <button id="item_form_cancel_button">Cancel</button>
         </footer>
     </div>
+
+    <div id="modal_yes_no_dialog" class="modal_yes_no_dialog">
+        <div class="modal_yes_no_dialog-content">
+            <p class="modal_header">Delete list?</p>
+            <br>
+            <p class="modal_body">Are you sure you want to delete this list?</p>
+            <br>
+            <button id="modal_yes_button" class="modal_yes_button">Yes</button>
+            <button id="modal_no_button" class="modal_no_button">No</button>
+            <p class="modal_footer">The list will not be retreivable.</p>
+        </div>
+    </div>
+
 </body>
 
 </html>

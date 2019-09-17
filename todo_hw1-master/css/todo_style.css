@@ -107,9 +107,6 @@ body {
 #item_form_submit_button:hover, #item_form_cancel_button:hover {
     box-shadow: 1px 2px;
 }
-
-
-
 .modal_yes_no_dialog-content {
     background-color: var(--swatch-complement);
 }
@@ -127,9 +124,9 @@ body {
 
     cursor: default;
 }
-.list_item_add_card:hover {
+/*.list_item_add_card:hover {
     color: var(--swatch-bright-accent);
-}
+}*/
 .list_item_header_card {
     background-color: var(--swatch-accent);
 }
@@ -159,7 +156,7 @@ body {
     color: red;
 }
 .disabled {
-    background-color: "lightGray";
+    background-color: lightGray !important;
 }
 .list_item_toolbar_move_up, .list_item_toolbar_move_down, .list_item_toolbar_delete {
     background-color: var(--swatch-accent);
@@ -169,4 +166,12 @@ body {
 }
 .list_item_card_button {
     cursor: pointer;
+}
+
+.modal_header {
+}
+.modal_body {
+    font-weight: bold;
+}
+.modal_footer{ 
 }

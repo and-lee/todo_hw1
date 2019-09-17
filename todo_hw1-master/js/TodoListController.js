@@ -30,7 +30,11 @@ class TodoListController {
         this.registerEventHandler(TodoGUIId.ITEM_FROM_SUBMIT_BUTTON, TodoHTML.CLICK, this[TodoCallback.PROCESS_ITEM_SUBMIT]); //
         this.registerEventHandler(TodoGUIId.ITEM_FROM_CANCEL_BUTTON, TodoHTML.CLICK, this[TodoCallback.PROCESS_ITEM_CANCEL]); //
 
+        // CONTROLS ON THE MODAL
+        this.registerEventHandler(TodoGUIId.MODAL_YES_BUTTON, TodoHTML.CLICK, this[TodoCallback.PROCESS_CONFIRM_DELETE_LIST]);
+        this.registerEventHandler(TodoGUIId.MODAL_NO_BUTTON, TodoHTML.CLICK, this[TodoCallback.PROCESS_CANCEL_DELETE_LIST]);
     }
+    
 
     /**
      * This function helps the constructor setup the event handlers for all controls.
@@ -111,26 +115,19 @@ class TodoListController {
      * trash icon to delete the current list. Conformation appears
      */
     processDeleteList() {
-        let listBeingEdited = window.todo.model.listToEdit;
         window.todo.view.showDialog();
-        
-        let yes = document.getElementById(TodoGUIId.MODAL_YES_BUTTON);
-        let no = document.getElementById(TodoGUIId.MODAL_NO_BUTTON);
-        yes.onclick = function() { //yes = delete list
-            window.todo.controller.processConfirmDeleteList(listBeingEdited);
-        }
-        no.onclick = function() { //No = close modal
-            window.todo.controller.processCancelDeleteList();
-        }
-
+        document.body.classList.add(TodoGUIId.MODAL_OPEN);
     }
 
     /**
      * Comfirm in deleting the list removes the list and 
      * returns to the home screen
      */
-    processConfirmDeleteList(listBeingEdited) {
-        window.todo.view.hideDialog();
+    processConfirmDeleteList() {
+        let listBeingEdited = window.todo.model.listToEdit;
+        //window.todo.view.hideDialog();
+        //document.body.classList.remove(TodoGUIId.MODAL_OPEN);
+        window.todo.controller.processCancelDeleteList();
         window.todo.model.removeList(listBeingEdited);
         window.todo.model.goHome();
     }
@@ -140,74 +137,89 @@ class TodoListController {
      */
     processCancelDeleteList() {
         window.todo.view.hideDialog();
+        document.body.classList.remove(TodoGUIId.MODAL_OPEN);
     }
 
     /**
      * Move current item up the list
      */
     processMoveItemUp(itemArgs){
-        let listBeingEdited = window.todo.model.listToEdit;
+        if (parseInt(itemArgs) != 0) { // not disabeled
+            let listBeingEdited = window.todo.model.listToEdit;
+
+            let temp = listBeingEdited.getItemAtIndex(itemArgs);
+            listBeingEdited.items[itemArgs] = listBeingEdited.items[parseInt(itemArgs)-1];
+            listBeingEdited.items[parseInt(itemArgs)-1] = temp;
+
+            window.todo.view.loadListData(listBeingEdited); // reload list with changes
+        }
         
-        let temp = listBeingEdited.getItemAtIndex(itemArgs);
-        listBeingEdited.items[itemArgs] = listBeingEdited.items[parseInt(itemArgs)-1];
-        listBeingEdited.items[parseInt(itemArgs)-1] = temp;
-
-        window.todo.view.loadListData(listBeingEdited); // reload list with changes
-
+        event.stopPropagation(); // on edit item card
     }
 
     /**
      * Move current item down the list
      */
     processMoveItemDown(itemArgs){
-        let listBeingEdited = window.todo.model.listToEdit;
+        if (parseInt(itemArgs) != window.todo.model.listToEdit.items.length-1) {
+            let listBeingEdited = window.todo.model.listToEdit;
 
-        let temp = listBeingEdited.getItemAtIndex(itemArgs);
-        listBeingEdited.items[itemArgs] = listBeingEdited.items[parseInt(itemArgs)+1];
-        listBeingEdited.items[parseInt(itemArgs)+1] = temp;
-
-        window.todo.view.loadListData(listBeingEdited); // reload list with changes
-
+            let temp = listBeingEdited.getItemAtIndex(itemArgs);
+            listBeingEdited.items[itemArgs] = listBeingEdited.items[parseInt(itemArgs)+1];
+            listBeingEdited.items[parseInt(itemArgs)+1] = temp;
+    
+            window.todo.view.loadListData(listBeingEdited); // reload list with changes
+        }
+        
+        event.stopPropagation(); // on edit item card
     }
 
     /**
      * Deletes item when button is pressed
      */
-    processDeleteItem(itemArgs){
+    processDeleteItem(itemArgs) {
         let listBeingEdited = window.todo.model.listToEdit;
         listBeingEdited.removeItem(listBeingEdited.getItemAtIndex(itemArgs));
         window.todo.view.loadListData(listBeingEdited); // reload list without item
+        event.stopPropagation(); // on edit item card
     }
 
     /**
-     * 
+     * Adds tag to know to add item
+     * Goes to edit item screen
      */
     processAddItem() {
-        //change edit window
-        // CHANGE THE SCREEN
+        // change edit window
         window.todo.model.goItem();
 
-        //ADD TO LIST
-        //let listBeingEdited = window.todo.model.listToEdit;
-        //TAG
+        // ADD TO LIST
+        // TAG
+        window.todo.model.setIsEditingItem(false);
     }
 
 
     /**
-     * 
+     * Adds tag to know to edit item
+     * Goes to edit item screen
      */
-    processEditItem() { //*****************************************************************************
-        //change to edit window
-        // CHANGE THE SCREEN
-        //let listBeingEdited = window.todo.model.listToEdit;
+    processEditItem(itemArgs) {
+        // change to edit window
         window.todo.model.goItem();
 
-        // EDIT ITEM
-        //TAG
+        // TAG EDIT ITEM
+        window.todo.model.setIsEditingItem(true);
+        this.itemIndex = itemArgs; // index of item
+
+        // load item data on edit item screen
+        let editItem = window.todo.model.listToEdit.getItemAtIndex(itemArgs);
+        document.getElementById(TodoGUIId.ITEM_DESCRIPTION_TEXTFIELD).value = editItem.getDescription();
+        document.getElementById(TodoGUIId.ITEM_ASSIGNED_TO_TEXTFIELD).value = editItem.getAssignedTo();
+        document.getElementById(TodoGUIId.ITEM_DUE_DATE_PICKER).value = editItem.getDueDate();
+        document.getElementById(TodoGUIId.ITEM_COMPLETED_CHECKBOX).checked = editItem.isCompleted();
     }
 
     /**
-     * 
+     * Adds or edits item when submit button is pressed on edit item screen
      */
     processItemSubmit() {
         //DATA VALUES
@@ -217,30 +229,34 @@ class TodoListController {
         let assignedToTextField = document.getElementById(TodoGUIId.ITEM_ASSIGNED_TO_TEXTFIELD);
         let newAssignedTo = assignedToTextField.value;
 
-        /** IF TEXT FEILDS ARE EMPTY */
-
         // Due date year-month-day
         let dueDatePicker = document.getElementById(TodoGUIId.ITEM_DUE_DATE_PICKER);
-        let dueDatePick = new Date(dueDatePicker.value); // get date value
+        let dueDate = dueDatePicker.value; // get date value
         
-        //let day = ("0" + dueDatePick.getDate()).slice(-2); // -1
-        let day = ("0" + (dueDatePick.getDate() + 1)).slice(-2);
-        let month = ("0" + (dueDatePick.getMonth() + 1)).slice(-2);
-        let dueDate = dueDatePick.getFullYear()+"-"+(month)+"-"+(day);
-
-        if (dueDatePick == "Invalid Date") { //HIDE CREATE BUTTON
-            //disable Submit button
-            
-        }
-        
-
-
         // Completed
         let completedCheckbox = document.getElementById(TodoGUIId.ITEM_COMPLETED_CHECKBOX);
         let completed = completedCheckbox.checked; // returns true/false
 
+        let listBeingEdited = window.todo.model.listToEdit;
+        if (window.todo.model.isEditingItem()) {
+            let editItem = listBeingEdited.getItemAtIndex(window.todo.controller.itemIndex);
 
-        console.log(dueDate);
+            editItem.setDescription(newDescription);
+            editItem.setAssignedTo(newAssignedTo);
+            editItem.setDueDate(dueDate);
+            editItem.setCompleted(completed);
+            
+        } else { // add item
+            let newItem = new TodoListItem();
+            newItem.setDescription(newDescription);
+            newItem.setAssignedTo(newAssignedTo);
+            newItem.setDueDate(dueDate);
+            newItem.setCompleted(completed);
+
+            listBeingEdited.addItem(newItem);
+        }
+
+        window.todo.view.loadListData(listBeingEdited); // reload list
         window.todo.controller.processItemCancel(); // reset data feilds and return to updated list
 
     }

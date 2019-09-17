@@ -82,28 +82,22 @@ class TodoListView {
         toolbarDiv.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_CARD_TOOLBAR);
         
         let up = document.createElement(TodoHTML.DIV);
-        //up.setAttribute("id", TodoGUIId.LIST_ITEM_TOOLBAR_MOVE_UP_BUTTON); //
-        up.setAttribute(TodoHTML.ID, TodoGUIId.ITEM_CARD_ + listItemIndex + "UP");
+        //up.setAttribute(TodoHTML.ID, TodoGUIId.ITEM_CARD_ + listItemIndex + "UP");
         up.innerHTML = "&#8679"; // up arrow
-        up.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_TOOLBAR_MOVE_UP); // 888888888888888888888888888888888888888888888888888888888   NULL BUTTON
+        up.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_TOOLBAR_MOVE_UP);
+        this.setupCallback(up, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_UP, itemArgs);
         if (listItemIndex == 0) {
-            //up.style.backgroundColor = "lightGray"; // disabeled = non-clickable
-            //*****window.todo.view.disableButton(0, "UP"); //
-        } else {
-            //up.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_TOOLBAR_BUTTON_MOVE_UP);
-            this.setupCallback(up, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_UP, itemArgs); // only clickable when
+            up.classList.add(TodoGUIClass.DISABLED); // disabeled = non-clickable
+            //window.todo.view.disableButton(0, "UP");
         }
-        //this.setupCallback(up, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_UP, itemArgs);
-        
+
         let down = document.createElement(TodoHTML.DIV);
         down.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_TOOLBAR_MOVE_DOWN);
         down.innerHTML = "&#8681"; // down arrow
+        this.setupCallback(down, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_DOWN, itemArgs);
         if (listItemIndex == window.todo.model.listToEdit.items.length-1) { // let listBeingEdited = window.todo.model.listToEdit;
-            down.style.backgroundColor = "lightGray"; //disable
-        } else {
-            this.setupCallback(down, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_DOWN, itemArgs);
+            down.classList.add(TodoGUIClass.DISABLED); // disable
         }
-        //this.setupCallback(down, TodoHTML.ONCLICK, TodoCallback.PROCESS_MOVE_ITEM_DOWN, itemArgs);
 
         let del = document.createElement(TodoHTML.DIV);
         del.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_TOOLBAR_DELETE);
@@ -170,7 +164,7 @@ class TodoListView {
         let callbackArguments = [];
         add.innerHTML = "&#43"; // plus sign
         this.setupCallback(add, TodoHTML.ONCLICK, TodoCallback.PROCESS_ADD_ITEM, callbackArguments);
-        
+
         listItemFooterDiv.appendChild(add);
         return listItemFooterDiv;
     }
@@ -341,8 +335,8 @@ class TodoListView {
      */
     hideDialog() {
         let dialog = document.getElementById(TodoGUIId.MODAL_YES_NO_DIALOG);
-        dialog.classList.remove(TodoGUIClass.IS_VISIBLE); // ********************************************
-        dialog.style.display = "none"; //
+        dialog.classList.remove(TodoGUIClass.IS_VISIBLE);
+        dialog.classList.add(TodoGUIClass.IS_NOT_VISIBLE);
     }
 
     /**
@@ -351,8 +345,9 @@ class TodoListView {
     showDialog() {
         let dialog = document.getElementById(TodoGUIId.MODAL_YES_NO_DIALOG);
         dialog.classList.add(TodoGUIClass.IS_VISIBLE);
-        dialog.style.display = "block"; //
-        //dialog.setAttribute(TodoHTML.CLASS, TodoGUIClass.IS_VISIBLE);
+        dialog.classList.remove(TodoGUIClass.IS_NOT_VISIBLE);
+
+        window.todo.view.showElementWithId(TodoGUIId.MODAL_YES_NO_DIALOG, true);
     }
 
     /**

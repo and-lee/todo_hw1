@@ -74,6 +74,11 @@ const TodoGUIId = {
     MODAL_YES_BUTTON: "modal_yes_button",
     MODAL_NO_BUTTON: "modal_no_button",
 
+    MODAL_HEADER: "modal_header",
+    MODAL_BODY: "modal_body",
+    MODAL_FOOTER: "modal footer",
+    MODAL_OPEN: "modal_open",
+
     // IDs FOR ITEM SCREEN CONTROLS
     ITEM_ATTRIBUTE_CONTAINER: "item_attribute_container",
 
@@ -118,7 +123,6 @@ const TodoGUIClass = {
     LIST_ITEM_CARD_COMPLETED: "list_item_card_completed",
     LIST_ITEM_CARD_NOT_COMPLETED: "list_item_card_not_completed",
 
-
     LIST_ITEM_CARD_TOOLBAR: "list_item_card_toolbar",
 
     LIST_ITEM_TOOLBAR_MOVE_UP: "list_item_toolbar_move_up",
@@ -126,10 +130,10 @@ const TodoGUIClass = {
     LIST_ITEM_TOOLBAR_DELETE: "list_item_toolbar_delete",
 
     LIST_ITEM_CARD_BUTTON: "list_item_card_button",
-        
-    DISABLED: "disabled",
-    IS_VISABLE: "is_visable",
 
+    DISABLED: "disabled",
+    IS_VISIBLE: "is_visible",
+    IS_NOT_VISIBLE: "is_not_visible",
 
 };
 
@@ -151,7 +155,6 @@ const TodoCallback = {
     PROCESS_CONFIRM_DELETE_LIST: "processConfirmDeleteList",
     PROCESS_CANCEL_DELETE_LIST: "processCancelDeleteList",
 
-
     PROCESS_ITEM_SUBMIT: "processItemSubmit",
     PROCESS_ITEM_CANCEL: "processItemCancel",
 
@@ -168,8 +171,8 @@ const TodoCallback = {
     PROCESS_SORT_ITEMS_BY_DUE_DATE: "window.todo.controller.processSortItemsByDueDate",
     PROCESS_SORT_ITEMS_BY_STATUS: "window.todo.controller.processSortItemsByStatus",
 
-
     PROCESS_ADD_ITEM: "window.todo.controller.processAddItem",
+
 };
 
 /**
