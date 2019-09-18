@@ -158,14 +158,17 @@ class TodoListView {
     buildListItemsFooter() {
         let listItemFooterDiv = document.createElement(TodoHTML.DIV);
         listItemFooterDiv.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_ADD_CARD);
+        listItemFooterDiv.innerHTML = "+";
+        let callbackArguments = [];
+        this.setupCallback(listItemFooterDiv, TodoHTML.ONCLICK, TodoCallback.PROCESS_ADD_ITEM, callbackArguments);
         
-        let add = document.createElement(TodoHTML.DIV);
+        /*let add = document.createElement(TodoHTML.DIV);
         add.setAttribute(TodoHTML.CLASS, TodoGUIClass.LIST_ITEM_CARD_BUTTON);
         let callbackArguments = [];
         add.innerHTML = "&#43"; // plus sign
         this.setupCallback(add, TodoHTML.ONCLICK, TodoCallback.PROCESS_ADD_ITEM, callbackArguments);
 
-        listItemFooterDiv.appendChild(add);
+        listItemFooterDiv.appendChild(add);*/
         return listItemFooterDiv;
     }
 

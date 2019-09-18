@@ -46,11 +46,13 @@ body {
     padding-left: 10%;
     padding-top: 5%;
     padding-bottom: 5%;
+    cursor: default;
 }
 #home_banner_image {}
 #home_new_list_container {}
 #home_new_list_button {
     font-size: 32pt;
+    cursor: pointer;
 }
 #home_new_list_button:hover {
     box-shadow: 1px 2px;
@@ -103,6 +105,7 @@ body {
 #item_completed_checkbox {}
 #item_form_submit_button, #item_form_cancel_button {
     font-size: 22px;
+    cursor: pointer;
 }
 #item_form_submit_button:hover, #item_form_cancel_button:hover {
     box-shadow: 1px 2px;
@@ -114,15 +117,15 @@ body {
 /* LIST SCREEN CLASSES */
 .list_item_card, .list_item_add_card {
     background-color: var(--swatch-neutral);
+    cursor: pointer;
 }
-.list_item_card:hover { /*, .list_item_add_card:hover {*/
+.list_item_card:hover, .list_item_add_card:hover {
     background-color: var(--swatch-complement);
 }
 .list_item_add_card {
     font-weight: bold;
     font-size: 24pt;
-
-    cursor: default;
+    /*cursor: default;*/
 }
 /*.list_item_add_card:hover {
     color: var(--swatch-bright-accent);
@@ -133,6 +136,7 @@ body {
 .list_item_task_header, .list_item_due_date_header, .list_item_status_header {
     font-weight: bold;
     font-size: 24pt;
+    cursor: pointer;
 }
 .list_item_task_header:hover, .list_item_due_date_header:hover, .list_item_status_header:hover {
     color: var(--swatch-primary);
@@ -158,20 +162,27 @@ body {
 .disabled {
     background-color: lightGray !important;
 }
+.disabled:hover {
+    color: inherit !important; /*no hover color*/
+}
 .list_item_toolbar_move_up, .list_item_toolbar_move_down, .list_item_toolbar_delete {
     background-color: var(--swatch-accent);
     cursor: pointer;
     font-size: 32px;
     font-weight: bold;
 }
+.list_item_toolbar_move_up:hover, .list_item_toolbar_move_down:hover, .list_item_toolbar_delete:hover {
+    color: var(--swatch-primary);
+}
+
 .list_item_card_button {
     cursor: pointer;
 }
-
-.modal_header {
-}
+.modal_header {}
 .modal_body {
     font-weight: bold;
 }
-.modal_footer{ 
+.modal_footer{ }
+.modal_yes_button, .modal_no_button {
+    cursor: pointer;
 }

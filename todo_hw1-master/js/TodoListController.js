@@ -195,6 +195,11 @@ class TodoListController {
         // ADD TO LIST
         // TAG
         window.todo.model.setIsEditingItem(false);
+        
+        document.getElementById(TodoGUIId.ITEM_DESCRIPTION_TEXTFIELD).value="Unknown";
+        document.getElementById(TodoGUIId.ITEM_ASSIGNED_TO_TEXTFIELD).value="Unknown";
+        document.getElementById(TodoGUIId.ITEM_DUE_DATE_PICKER).value="";
+        document.getElementById(TodoGUIId.ITEM_COMPLETED_CHECKBOX).checked=false;
     }
 
 
