@@ -173,6 +173,9 @@ class TodoListModel {
     updateListName(listBeingEdited, newName) {
         // WE'RE GOING TO CHANGE THE NAME TOO BUT ONLY UPDATE
         // THE LIST OF LIST LINKS IF IT'S CHANGED
+        if (newName.trim() == "") { /* make list name have characters inorder to be selectable on home screen */
+            newName = "Unknown";
+        }
         if (listBeingEdited.getName() != newName) {
             listBeingEdited.setName(newName);
             this.view.loadListLinks(this.todoLists);
